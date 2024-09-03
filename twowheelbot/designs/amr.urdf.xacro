@@ -2,5 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="amr_bot">
 
     <xacro:include filename = "amrurdf.urdf" />
+    <xacro:include filename = "gz_ctrl.xacro" />
 
 </robot>
