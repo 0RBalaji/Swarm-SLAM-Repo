@@ -8,7 +8,7 @@
   <joint name="chassis_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 ${pi}" />
   </joint>
 
   <link name="base_link">
@@ -217,69 +217,6 @@
     <child link="lr_caster" />
     <axis xyz="0 0 1" />
   </joint>
-
-
-<!-- Lidar Joint -->
-  <link name="lidar_link">
-    <visual>
-      <origin xyz="0 0 -0.032" rpy="0 0 ${pi}" />
-      <geometry>
-        <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
-      </geometry>
-      <material name="">
-        <color rgba="0.75294 0.75294 0.75294 0.4" />
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="0 0 -0.032" rpy="0 0 ${pi}" />
-      <geometry>
-        <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
-      </geometry>
-    </collision>
-    <inertial>
-      <origin xyz="0 0 -0.032" rpy="0 0 ${pi}" />
-      <mass value="0.16538" />
-      <inertia ixx="7.519E-05" ixy="-4.8472E-08" ixz="2.886E-08" iyy="7.8865E-05" iyz="-2.1848E-06" izz="0.00010995" />
-    </inertial>
-  </link>
-
-  <joint name="lidar_link_joint" type="fixed">
-    <origin xyz="-0.0063382 0.0016853 0.225" rpy="0 0 1.5164" />
-    <parent link="base_link" />
-    <child link="lidar_link" />
-  </joint>
-
-  <gazebo reference="lidar_link">
-    <material>Gazebo/Brown</material>
-
-    <sensor name="laser" type="ray">
-        <pose>0 0 0 0 0 0</pose>
-        <visualize>false</visualize>
-        <update_ray>10</update_ray>
-        <ray>
-            <scan>
-                <horizontal>
-                    <samples>360</samples>
-                    <resolution>0.5</resolution>
-                    <min_angle>-3.14</min_angle>
-                    <max_angle>3.14</max_angle>
-                </horizontal>
-            </scan>
-            <range>
-                <min>0.1</min>
-                <max>8</max>
-                <!-- <resoluion>0.05</resoluion> -->
-            </range>
-        </ray>
-        <plugin name = "laser_controller" filename = "libgazebo_ros_ray_sensor.so">
-            <ros>
-                <argument>~/out:=scan</argument>
-            </ros>
-            <output_type>sensor_msgs/LaserScan</output_type>
-            <frame_name>lidar_link</frame_name>
-        </plugin>
-    </sensor>
-  </gazebo>
 
   <gazebo reference="base_link">
     <material>Gazebo/Blue</material>

@@ -26,7 +26,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY designs include launch src meshes config
+  DIRECTORY designs launch meshes config
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -3,5 +3,14 @@
 
     <xacro:include filename = "amrurdf.urdf" />
     <xacro:include filename = "gz_ctrl.xacro" />
+    <xacro:include filename = "lidar.xacro"/>
+    <!-- <xacro:include filename = "imu.xacro"/> -->
+
+    <!-- <xacro:if value="$(arg use_ros2_control)">
+        <xacro:include filename="ros2_control.xacro" />
+    </xacro:if>
+    <xacro:unless value="$(arg use_ros2_control)">
+        <xacro:include filename="gazebo_control.xacro" />
+    </xacro:unless> -->
 
 </robot>

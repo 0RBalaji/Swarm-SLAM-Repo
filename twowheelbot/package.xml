@@ -9,11 +9,18 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <exec_depend>joint_state_publisher</exec_depend>
+  <!-- <exec_depend>joint_state_publisher_gui</exec_depend> -->
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
-    <gazebo_ros gazebo_model_path = "/home/srp/twowheelamr/install/twowheelbot/share/" />
+    <gazebo_ros gazebo_model_path = "/home/balaji/amr_ws/install/twowheelbot/share/" />
   </export>
 </package>
