@@ -9,9 +9,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     pkg_name = "twowheelbot"
-    pkg_path = os.path.join(get_package_share_directory(pkg_name), 'launch', 'bot_launch.py')
-    gazebo_path = os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-    gazebo_params_file = os.path.join(get_package_share_directory(pkg_name),'config','gazebo_params.yaml')
+    pkg_path = os.path.join(get_package_share_directory(pkg_name),
+                            'launch', 'bot_launch.py')
+    gazebo_path = os.path.join(get_package_share_directory('gazebo_ros'),
+                               'launch', 'gazebo.launch.py')
+    gazebo_params_file = os.path.join(get_package_share_directory(pkg_name),
+                                      'config','gazebo_params.yaml')
+    world_file = os.path.join(get_package_share_directory(pkg_name),
+                              'worlds', 'warehouse.world')
+
     
     rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([pkg_path]),
@@ -19,7 +25,8 @@ def generate_launch_description():
     )
     
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([gazebo_path]), launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
+        PythonLaunchDescriptionSource([gazebo_path]),
+        launch_arguments={'extra_gazebo_args': '--ros-args --params-file ' + gazebo_params_file}.items()
     )
     
     spawn = Node(
@@ -28,29 +35,23 @@ def generate_launch_description():
         arguments = ['-topic','robot_description', '-entity', 'amr_bot'],
         output = 'screen'
     )
-
-    # twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
-    # twist_mux = Node(
-    #         package="twist_mux",
-    #         executable="twist_mux",
-    #         parameters=[twist_mux_params, {'use_sim_time': True}],
-    #         remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
-    #     )
     
-    # diff_drive_spawner = Node(
-    #     package="controller_manager",
-    #     executable="spawner.py",
-    #     arguments=["diff_cont"],
-    # )
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_cont"],
+    )
 
-    # joint_broad_spawner = Node(
-    #     package="controller_manager",
-    #     executable="spawner.py",
-    #     arguments=["joint_broad"],
-    # )
-    
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_broad"],
+    )
+
     return LaunchDescription([
         rsp,
         gazebo,
-        spawn
+        spawn,
+        diff_drive_spawner,
+        joint_broad_spawner
     ])

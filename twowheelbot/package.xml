@@ -4,17 +4,18 @@
   <name>twowheelbot</name>
   <version>0.0.0</version>
   <description>Single SLAM</description>
-  <maintainer email="rajalbandi2balaji@gmail.com">srp</maintainer>
+  <maintainer email="rajalbandi2balaji@gmail.com">IRP</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>joint_state_publisher</exec_depend>
-  <!-- <exec_depend>joint_state_publisher_gui</exec_depend> -->
+  <!-- <exec_depend>joint_state_publisher</exec_depend> -->
+  <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>rviz</exec_depend>
   <exec_depend>xacro</exec_depend>
-  <exec_depend>robot_localization</exec_depend>
+  <!-- <exec_depend>robot_localization</exec_depend> -->
+
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
