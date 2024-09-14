@@ -5,8 +5,6 @@ from ament_index_python.packages import get_package_share_directory
 from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 
-from launch.actions import ExecuteProcess
-
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
@@ -19,6 +17,7 @@ from launch.event_handlers import OnProcessStart
 def generate_launch_description():
     
     use_sim_time = LaunchConfiguration('use_sim_time')
+    use_ros2_control = LaunchConfiguration('use_ros2_control')
     
     #package find
     pkg_path = os.path.join(get_package_share_directory('twowheelbot'))
@@ -40,9 +39,7 @@ def generate_launch_description():
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
-        arguments = [bot_file],
-        parameters=[{'robot_description': Command(['xacro ', bot_file])}],
-        condition=launch.conditions.UnlessCondition(LaunchConfiguration('gui'))
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
     
     #Joint state publisher gui node creation
@@ -50,8 +47,7 @@ def generate_launch_description():
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
         name='joint_state_publisher_gui',
-        output='screen',
-        condition=launch.conditions.IfCondition(LaunchConfiguration('gui'))
+        output='screen'
     )
     
     #RVIZ launch node
@@ -64,22 +60,23 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file]
     )
 
-    localization_path = os.path.join(pkg_path, 'config/ekf.yaml')
-    robot_localization_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        output='screen',
-        parameters=[localization_path, {'use_sim_time': use_sim_time}]
-    )
+    # localization_path = os.path.join(pkg_path, 'config/ekf.yaml')
+    # robot_localization_node = Node(
+    #     package='robot_localization',
+    #     executable='ekf_node',
+    #     name='ekf_filter_node',
+    #     output='screen',
+    #     parameters=[localization_path, {'use_sim_time': use_sim_time}]
+    # )
     
     return LaunchDescription([
         # Nodes
         DeclareLaunchArgument('use_sim_time', default_value='True', description='Flag to enable use_sim_time'),
-        DeclareLaunchArgument(name='gui', default_value='True', description='Flag to enable joint_state_publisher_gui'),
+        DeclareLaunchArgument('use_ros2_control', default_value='True', description='Use ros2_control if true'),
+        # DeclareLaunchArgument('gui', default_value='True', description='Flag to enable joint_state_publisher_gui'),
 
         node_robot_state_publisher,
-        # node_joint_state_publisher,
+        node_joint_state_publisher,
         # robot_localization_node,
         # node_joint_state_publisher_gui,
         node_rviz2

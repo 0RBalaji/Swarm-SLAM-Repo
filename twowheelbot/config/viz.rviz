@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 719
@@ -133,8 +134,6 @@ Visualization Manager:
           Value: false
         lr_caster:
           Value: false
-        map:
-          Value: true
         odom:
           Value: true
         rf_caster:
@@ -149,24 +148,23 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          odom:
-            base_footprint:
-              base_link:
-                left_wheel:
-                  {}
-                lf_caster:
-                  {}
-                lidar_link:
-                  {}
-                lr_caster:
-                  {}
-                rf_caster:
-                  {}
-                right_wheel:
-                  {}
-                rr_caster:
-                  {}
+        odom:
+          base_footprint:
+            base_link:
+              left_wheel:
+                {}
+              lf_caster:
+                {}
+              lidar_link:
+                {}
+              lr_caster:
+                {}
+              rf_caster:
+                {}
+              right_wheel:
+                {}
+              rr_caster:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -181,7 +179,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 0
@@ -202,7 +200,7 @@ Visualization Manager:
         Value: /scan
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 0.699999988079071
       Class: rviz_default_plugins/Map
       Color Scheme: map
@@ -227,7 +225,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -270,7 +268,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 18.318927764892578
+      Distance: 28.86392593383789
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -285,7 +283,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.4903974533081055
+      Pitch: 0.49039769172668457
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
       Yaw: 0.6054010391235352

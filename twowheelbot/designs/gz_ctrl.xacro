@@ -7,7 +7,7 @@
             <!-- Wheel Info -->
             <left_joint>left_wheel_joint</left_joint>
             <right_joint>right_wheel_joint</right_joint>
-            ]<wheel_separation>0.468</wheel_separation>
+            <wheel_separation>0.468</wheel_separation>
             <wheel_diameter>0.07458</wheel_diameter>
 
 
@@ -18,7 +18,7 @@
 
             <!-- output -->
             <odometry_frame>odom</odometry_frame>
-            <robot_base_frame>base_link</robot_base_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
 
             <publish_odom>true</publish_odom>
             <publish_odom_tf>true</publish_odom_tf>
