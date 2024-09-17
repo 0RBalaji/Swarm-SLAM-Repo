@@ -134,6 +134,8 @@ Visualization Manager:
           Value: false
         lr_caster:
           Value: false
+        map:
+          Value: true
         odom:
           Value: true
         rf_caster:
@@ -148,6 +150,8 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
+        map:
+          {}
         odom:
           base_footprint:
             base_link:
@@ -225,7 +229,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -286,7 +290,7 @@ Visualization Manager:
       Pitch: 0.49039769172668457
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.6054010391235352
+      Yaw: 0.6004010438919067
     Saved: ~
 Window Geometry:
   Displays:
@@ -304,5 +308,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 925
-  X: 1990
+  X: 995
   Y: 27

@@ -9,10 +9,6 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 import xacro
-import launch
-
-from launch.actions import RegisterEventHandler
-from launch.event_handlers import OnProcessStart
 
 def generate_launch_description():
     
@@ -23,7 +19,7 @@ def generate_launch_description():
     pkg_path = os.path.join(get_package_share_directory('twowheelbot'))
     bot_file = os.path.join(pkg_path, 'designs', 'amr.urdf.xacro')
     
-    bot_design_config = Command(['xacro ', bot_file, ' sim_mode:=', use_sim_time])
+    bot_design_config = Command(['xacro ', bot_file, ' sim_mode:=', use_sim_time, ' use_ros2_control:=', use_ros2_control])
     
     #Robot state publisher node creation
     para = {'robot_description': bot_design_config, 'use_sim_time': use_sim_time}

@@ -45,7 +45,7 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'map',
-            default_value=os.path.join(bringup_dir, 'maps', 'turtlebot3_world.yaml'),
+            default_value=os.path.join(bringup_dir, 'ros2_map_map.yaml'),
             description='Full path to map yaml file to load'),
 
         DeclareLaunchArgument(
