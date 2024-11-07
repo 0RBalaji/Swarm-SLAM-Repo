@@ -1,8 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <xacro:arg name="namespace" default=""/>
+
     <gazebo>
         <plugin name = "diff_drive" filename = "libgazebo_ros_diff_drive.so">
+
+            <ros>
+                <namespace>${namespace}</namespace>
+                <remapping>/tf:=tf</remapping>
+            </ros>
 
             <!-- Wheel Info -->
             <left_joint>left_wheel_joint</left_joint>
@@ -12,9 +19,10 @@
 
 
             <!-- Limits -->
-            <max_wheel_torque>200</max_wheel_torque>
-            <max_wheel_acceleration>10.0</max_wheel_acceleration>
+            <max_wheel_torque>500</max_wheel_torque>
+            <max_wheel_acceleration>20.0</max_wheel_acceleration>
 
+            <command_topic>cmd_vel</command_topic>
 
             <!-- output -->
             <odometry_frame>odom</odometry_frame>

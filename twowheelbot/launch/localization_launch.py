@@ -20,6 +20,7 @@ def generate_launch_description():
     params_file = LaunchConfiguration('params_file')
     lifecycle_nodes = ['map_server', 'amcl']
 
+    print(f"Map YAML file being used: {map_yaml_file}")
 
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]

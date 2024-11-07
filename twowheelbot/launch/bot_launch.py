@@ -13,37 +13,37 @@ import xacro
 def generate_launch_description():
     
     use_sim_time = LaunchConfiguration('use_sim_time')
-    use_ros2_control = LaunchConfiguration('use_ros2_control')
+    namespace = LaunchConfiguration('namespace')
     
     #package find
     pkg_path = os.path.join(get_package_share_directory('twowheelbot'))
     bot_file = os.path.join(pkg_path, 'designs', 'amr.urdf.xacro')
     
-    bot_design_config = Command(['xacro ', bot_file, ' sim_mode:=', use_sim_time, ' use_ros2_control:=', use_ros2_control])
+    bot_design_config = Command(['xacro ', bot_file, ' sim_mode:=', use_sim_time, ' namespace:=',namespace])
+
+    remappings = [('/tf', 'tf'),
+                  ('/tf_static', 'tf_static')]
     
     #Robot state publisher node creation
     para = {'robot_description': bot_design_config, 'use_sim_time': use_sim_time}
     node_robot_state_publisher = Node(
         package = 'robot_state_publisher',
         executable = 'robot_state_publisher',
+        name='rsp',
+        namespace=namespace,
         output = 'screen',
         parameters= [para]
+        # remappings=remappings
     )
 
     #Joint state publisher node creation
     node_joint_state_publisher = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
-        name='joint_state_publisher',
-        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
-    )
-    
-    #Joint state publisher gui node creation
-    node_joint_state_publisher_gui = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui',
-        output='screen'
+        name='jsp',
+        namespace=namespace,
+        parameters=[{'use_sim_time': use_sim_time}]
+        # remappings=remappings
     )
     
     #RVIZ launch node
@@ -53,27 +53,16 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', rviz_config_file]
+        arguments=['namespace', namespace, 
+                   '-d', rviz_config_file]
     )
-
-    # localization_path = os.path.join(pkg_path, 'config/ekf.yaml')
-    # robot_localization_node = Node(
-    #     package='robot_localization',
-    #     executable='ekf_node',
-    #     name='ekf_filter_node',
-    #     output='screen',
-    #     parameters=[localization_path, {'use_sim_time': use_sim_time}]
-    # )
     
     return LaunchDescription([
         # Nodes
         DeclareLaunchArgument('use_sim_time', default_value='True', description='Flag to enable use_sim_time'),
-        DeclareLaunchArgument('use_ros2_control', default_value='True', description='Use ros2_control if true'),
-        # DeclareLaunchArgument('gui', default_value='True', description='Flag to enable joint_state_publisher_gui'),
+        DeclareLaunchArgument('namespace', default_value='', description='pass the namespace with the _ at end'),
 
         node_robot_state_publisher,
         node_joint_state_publisher,
-        # robot_localization_node,
-        # node_joint_state_publisher_gui,
         node_rviz2
     ])

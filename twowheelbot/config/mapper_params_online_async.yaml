@@ -14,6 +14,8 @@ slam_toolbox:
     map_frame: map
     base_frame: base_footprint
     scan_topic: /scan
+    # lidar_frame: lidar_link
+    use_map_saver: false         ### True to save Map
     mode: localization    ### mapping   ### localization
 
     # if you'd like to immediately start continuing a map at a given pose
