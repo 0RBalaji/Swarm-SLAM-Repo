@@ -39,18 +39,6 @@ def generate_launch_description():
                               'config', 'mapper_params_online_async.yaml')
     
     map_file = os.path.join(get_package_share_directory(pkg_name), 'ros2_map_map.yaml')
-
-    param_substitutions = {
-        'use_sim_time': use_sim_time,
-        'yaml_filename': map_file}
-    
-    # configured_params = ParameterFile(
-    #     RewrittenYaml(
-    #         source_file=params_file,
-    #         root_key=namespace,
-    #         param_rewrites=param_substitutions,
-    #         convert_types=True),
-    #     allow_substs=True)
     
     sim_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(sim_path),
@@ -61,7 +49,7 @@ def generate_launch_description():
     slam_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(slam_path),
         launch_arguments = {'use_sim_time': use_sim_time,
-                            'map':map_file,
+                            # 'map':map_file,
                             'namespace':namespace,
                             'params_file':params_file}.items())
     

@@ -29,41 +29,10 @@ def generate_launch_description():
         default_value='',
         description='Namespace for the slam_toolbox node')
 
-    # Check if the provided param file has slam_toolbox params
-    has_node_params = HasNodeParams(source_file=params_file,
-                                    node_name='slam_toolbox')
-
-    actual_params_file = PythonExpression(['"', params_file, '" if ', has_node_params,
-                                           ' else "', default_params_file, '"'])
-
-    log_param_change = LogInfo(msg=['provided params_file ',  params_file,
-                                    ' does not contain slam_toolbox parameters. Using default: ',
-                                    default_params_file],
-                               condition=UnlessCondition(has_node_params))
-
-    # Conditional parameter assignment based on namespace
-    # if namespace != '':
-    #     slam_toolbox_params = {
-    #         'odom_frame': PythonExpression(['"', namespace, '/odom"']),
-    #         'map_frame': PythonExpression(['"', namespace, '/map"']),
-    #         # 'base_frame': PythonExpression(['"', namespace, '/base_footprint"']),
-    #         # Add other parameters here if necessary
-    #     }
-    # else:
-    #     slam_toolbox_params = {
-    #         'odom_frame': 'odom',
-    #         'map_frame': 'map',
-    #         # 'base_frame': 'base_footprint',
-    #         # Add other parameters here if necessary
-    #     }
-
-    replaced_params_file = ReplaceString(
-        source_file=actual_params_file,
-        replacements={'<robot_namespace>': ('/', namespace)})
-
     start_async_slam_toolbox_node = Node(
         parameters=[
-            replaced_params_file,
+            params_file,
+            # replaced_params_file,
             # slam_toolbox_params,
             {'use_sim_time': use_sim_time}
         ],
@@ -72,8 +41,11 @@ def generate_launch_description():
         name='slam_toolbox',
         output='screen',
         namespace=namespace,
-        remappings=[('/scan','scan'),
-                    ('/map','map')]
+        remappings=[("/scan","scan"),
+                    ('/map','map'),
+                    ('/map_metadata','map_metadata'),
+                    ('/tf','tf'),
+                    ('/tf_static','tf_static')]
     )
 
     ld = LaunchDescription()
@@ -81,7 +53,6 @@ def generate_launch_description():
     ld.add_action(declare_use_sim_time_argument)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(log_param_change)
     ld.add_action(start_async_slam_toolbox_node)
 
     return ld

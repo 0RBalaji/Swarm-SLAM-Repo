@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
+  <xacro:arg name="namespace" default=""/>
 
   <link name="base_footprint">
+    <namespace>${namespace}</namespace>
+    
   </link>
 
   <joint name="chassis_joint" type="fixed">
@@ -12,6 +15,7 @@
   </joint>
 
   <link name="base_link">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 ${pi}" />
       <geometry>
@@ -37,6 +41,7 @@
   <!-- Wheels -->
 
   <link name="left_wheel">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -67,6 +72,7 @@
   </joint>
   
   <link name="right_wheel">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -99,6 +105,7 @@
   <!-- Caster Wheels -->
 
   <link name="rf_caster">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -129,6 +136,7 @@
   </joint>
 
   <link name="lf_caster">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -159,6 +167,7 @@
   </joint>
 
   <link name="rr_caster">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
@@ -189,6 +198,7 @@
   </joint>
 
   <link name="lr_caster">
+    
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>

@@ -32,8 +32,12 @@ def generate_launch_description():
         name='rsp',
         namespace=namespace,
         output = 'screen',
-        parameters= [para]
-        # remappings=remappings
+        parameters= [para],
+        # remappings=[('/base_footprint','base_footprint'),
+        #             ('/left_wheel','left_wheel'),
+        #             ('/right_wheel','right_wheel'),
+        #             ('/lidar_link','lidar_link')]
+        remappings=remappings
     )
 
     #Joint state publisher node creation
@@ -42,8 +46,12 @@ def generate_launch_description():
         executable='joint_state_publisher',
         name='jsp',
         namespace=namespace,
-        parameters=[{'use_sim_time': use_sim_time}]
-        # remappings=remappings
+        parameters=[{'use_sim_time': use_sim_time}],
+        # remappings=[('/base_footprint','base_footprint'),
+        #             ('/left_wheel','left_wheel'),
+        #             ('/right_wheel','right_wheel'),
+        #             ('/lidar_link','lidar_link')]
+        remappings=remappings
     )
     
     #RVIZ launch node

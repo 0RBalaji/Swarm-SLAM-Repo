@@ -8,7 +8,7 @@ Panels:
         - /RobotModel1
         - /LaserScan1
         - /Map1
-      Splitter Ratio: 0.5
+      Splitter Ratio: 0.5176470875740051
     Tree Height: 719
   - Class: rviz_common/Selection
     Name: Selection
@@ -59,7 +59,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /botA/robot_description
+        Value: /bott/robot_description
       Enabled: true
       Links:
         All Links Enabled: true
@@ -120,52 +120,19 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz_default_plugins/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_footprint:
-          Value: true
-        base_link:
-          Value: false
-        left_wheel:
-          Value: false
-        lf_caster:
-          Value: false
-        lidar_link:
-          Value: false
-        lr_caster:
-          Value: false
-        rf_caster:
-          Value: false
-        right_wheel:
-          Value: false
-        rr_caster:
-          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            left_wheel:
-              {}
-            lf_caster:
-              {}
-            lidar_link:
-              {}
-            lr_caster:
-              {}
-            rf_caster:
-              {}
-            right_wheel:
-              {}
-            rr_caster:
-              {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 0.699999988079071
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -196,7 +163,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /botA/scan
+        Value: /bott/scan
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -212,13 +179,13 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /botA/map
+        Value: /bott/map
       Update Topic:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /botA/map_updates
+        Value: /bott/map_updates
       Use Timestamp: false
       Value: true
     - Alpha: 1
@@ -295,25 +262,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 21.094829559326172
+      Distance: 12.325456619262695
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.8493901491165161
-        Y: 4.946934700012207
-        Z: -0.9453108310699463
+        X: -0.1605495661497116
+        Y: 0.23064960539340973
+        Z: -0.12559935450553894
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9403973817825317
+      Pitch: 0.47539758682250977
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.4504010081291199
+      Yaw: 0.840401291847229
     Saved: ~
 Window Geometry:
   Displays:
