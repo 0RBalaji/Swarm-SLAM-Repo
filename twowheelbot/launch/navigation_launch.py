@@ -44,7 +44,12 @@ def generate_launch_description():
                   ('/tf_static', 'tf_static'),
                   ('/scan','scan'),
                   ('/map','map'),
-                  ('/map_metadata','map_metadata')]
+                  ('/map_metadata','map_metadata'),
+                  ('/goal_pose','goal_pose'),
+                  ('/global_costmap','global_costmap'),
+                  ('/local_costmap','local_costmap'),
+                  ('/cmd_vel','cmd_vel'),
+                  ('/odom','odom')]
 
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {

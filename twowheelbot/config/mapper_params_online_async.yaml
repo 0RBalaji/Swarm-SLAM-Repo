@@ -14,18 +14,16 @@ slam_toolbox:
     map_frame: map
     base_frame: base_footprint
     scan_topic: /scan
-    # lidar_frame: lidar_link
-    # use_map_saver: True         ### True to save Map
     mode: mapping    ### mapping   ### localization
 
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
-    # map_file_name: /home/balaji/amr_ws/src/twowheelbot/ros2_map_serial
+    # map_file_name: /home/balaji/multiamr/src/twowheelbot/ros2_map_serial
     # map_start_pose: [0.0, 0.0, 0.0]
     # map_start_at_dock: true
 
-    debug_logging: True
+    debug_logging: true
     throttle_scans: 1
     transform_publish_period: 0.02 #if 0 never publishes odometry
     map_update_interval: 5.0
@@ -36,6 +34,8 @@ slam_toolbox:
     tf_buffer_duration: 30.
     stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
     enable_interactive_mode: true
+    publish_map_updates: true
+
 
     # General Parameters
     use_scan_matching: true
