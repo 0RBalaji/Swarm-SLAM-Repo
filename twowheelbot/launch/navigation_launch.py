@@ -49,7 +49,15 @@ def generate_launch_description():
                   ('/global_costmap','global_costmap'),
                   ('/local_costmap','local_costmap'),
                   ('/cmd_vel','cmd_vel'),
-                  ('/odom','odom')]
+                #   ('/odom','odom'),
+                  ('/controller_server','controller_server'),
+                  ('/smoother_server','smoother_server'),
+                  ('/planner_server','planner_server'),
+                  ('/behavior_server','behavior_server'),
+                  ('/bt_navigator','bt_navigator'),
+                  ('/waypoint_follower','waypoint_follower'),
+                  ('/velocity_smoother','velocity_smoother')
+                  ]
 
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {

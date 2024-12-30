@@ -5,6 +5,9 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     namespace = LaunchConfiguration('namespace')
 
+    remappings = [('/map_update_broadcast','map_update_broadcast'),
+                    ('/map_merging_node','map_merging_node')]
+
     map_merger = Node(
         package='map_merger',
         executable='map_merger_node',
@@ -14,8 +17,8 @@ def generate_launch_description():
         parameters=[
             {'namespace': namespace}
         ],
-        remappings=[('/map_merging_node','map_merging_node')]
-        )
+        remappings=remappings
+    )
     
     new_map_merger = Node(
         package='map_merger',
@@ -26,8 +29,8 @@ def generate_launch_description():
         parameters=[
             {'namespace': namespace}
         ],
-        remappings=[('/map_merging_node','map_merging_node')]
-        )
+        remappings=remappings
+    )
 
     map_update_broadcast = Node(
         package='map_merger',
@@ -38,8 +41,8 @@ def generate_launch_description():
         parameters=[
             {'namespace': namespace}
         ],
-        remappings=[('/map_update_broadcast','map_update_broadcast')]
-        )
+        remappings=remappings
+    )
 
     return LaunchDescription([
         

@@ -187,7 +187,7 @@ def generate_launch_description():
     # Add actions to launch the necessary nodes
     ld.add_action(rsp)
     ld.add_action(jsp)
-    ld.add_action(gazebo)
+    # ld.add_action(gazebo)
     
     ld.add_action(spawn)
     ld.add_action(bringup_cmd)                   ### For other file
