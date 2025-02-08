@@ -1,0 +1,254 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <link name="base_footprint">
+  </link>
+
+  <joint name="chassis_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 ${pi}" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 ${pi}" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 ${pi}" />
+      <mass value="5.65793860989747" />
+      <inertia ixx="0.0209088158258865" ixy="-1.21570941586779E-06" ixz="-4.74576464436689E-07" iyy="0.0337922520357315" iyz="-6.19936087950491E-09" izz="0.0530796720169266" />
+    </inertial>
+  </link>
+
+  <!-- Wheels -->
+
+  <link name="left_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/left_wheel.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.294117647058824 0.294117647058824 0.294117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/left_wheel.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.408827478747937" />
+      <inertia ixx="0.000714801628089416" ixy="1.37054703675277E-13" ixz="-6.32708302254498E-14" iyy="0.000714801629073733" iyz="-1.37617566530445E-13" izz="0.00136123756937642" />
+    </inertial>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <origin xyz="0 0.234 0.0304999999999984" rpy="-${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="left_wheel" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <link name="right_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/right_wheel.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.294117647058824 0.294117647058824 0.294117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"  rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/right_wheel.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.408827478747941" />
+      <inertia ixx="0.000714801628692349" ixy="-4.98728780255981E-13" ixz="-8.55481626564712E-14" iyy="0.000714801628470818" iyz="1.25253999026371E-13" izz="0.00136123756937644" />
+    </inertial>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <origin xyz="0 -0.234 0.0304999999999984" rpy="${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="right_wheel" />
+    <axis xyz="0 0 -1" />
+  </joint>
+
+  <!-- Caster Wheels -->
+
+  <link name="rf_caster">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rf_caster.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rf_caster.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.0131302037781976" />
+      <inertia ixx="1.31770325266958E-06" ixy="-5.29431199926978E-23" ixz="2.24993126614424E-22" iyy="1.31770325266958E-06" iyz="-1.18236702448809E-22" izz="1.89555098822308E-06" />
+    </inertial>
+  </link>
+
+  <joint name="rf_caster_joint" type="fixed">
+    <origin xyz="0.121999999999999 -0.107 -0.028" rpy="${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="rf_caster" />
+    <axis xyz="0 0 -1" />
+  </joint>
+
+  <link name="lf_caster">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lf_caster.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lf_caster.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.0131302037781976" />
+      <inertia ixx="1.31770325266958E-06" ixy="0" ixz="1.52201232709757E-22" iyy="1.31770325266958E-06" iyz="2.05476734334866E-21" izz="1.89555098822308E-06" />
+    </inertial>
+  </link>
+
+  <joint name="lf_caster_joint" type="fixed">
+    <origin xyz="0.121999999999999 0.107 -0.028" rpy="-${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="lf_caster" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <link name="rr_caster">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rr_caster.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rr_caster.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.0131302037781976" />
+      <inertia ixx="1.31770325266958E-06" ixy="-9.24232433334024E-37" ixz="-5.29395592033938E-23" iyy="1.31770325266958E-06" iyz="2.04611747395592E-21" izz="1.89555098822309E-06" />
+    </inertial>
+  </link>
+
+  <joint name="rr_caster_joint" type="fixed">
+    <origin xyz="-0.154 -0.107 -0.028" rpy="${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="rr_caster" />
+    <axis xyz="0 0 -1" />
+  </joint>
+
+  <link name="lr_caster">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lr_caster.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.25098 0.25098 0.25098 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lr_caster.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01313" />
+      <inertia ixx="1.3177E-06" ixy="7.5232E-37" ixz="1.125E-22" iyy="1.3177E-06" iyz="2.0589E-21" izz="1.8956E-06" />
+    </inertial>
+  </link>
+
+  <joint name="lr_caster_joint" type="fixed">
+    <origin xyz="-0.154 0.107 -0.028" rpy="-${pi/2} 0 0" />
+    <parent link="base_link" />
+    <child link="lr_caster" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="lf_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo>
+  <gazebo reference="lr_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo>
+  <gazebo reference="rf_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo>
+  <gazebo reference="rr_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo>
+
+
+</robot>

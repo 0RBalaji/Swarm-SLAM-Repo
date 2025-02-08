@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="AME">
+
+    <xacro:arg name="robot_namespace" default=""/>
+
+    <xacro:arg name="sim_mode" default="false"/>
+    <xacro:arg name="use_ros2_control" default = "false"/>
+
+    <!-- Pass namespace as an argument if needed within amrurdf.urdf -->
+    <xacro:property name="robot_namespace" value="$(arg robot_namespace)"/>
+
+    <xacro:include filename = "amrurdf.urdf" />
+    <xacro:include filename = "lidar.xacro"/>
+
+    <!-- <xacro:include filename = "gz_ctrl.xacro" /> -->
+    <!-- <xacro:include filename = "imu.xacro"/> -->
+
+    <xacro:if value="$(arg use_ros2_control)">
+        <xacro:include filename="ros2_control.xacro" />
+    </xacro:if>
+    <xacro:unless value="$(arg use_ros2_control)">
+        <xacro:include filename="gz_ctrl.xacro" />
+    </xacro:unless>
+
+</robot>

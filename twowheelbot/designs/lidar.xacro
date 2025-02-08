@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:arg name="robot_namespace" default=""/>
+
+  <!-- Lidar Joint -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.75294 0.75294 0.75294 0.4" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.16538" />
+      <inertia ixx="7.519E-05" ixy="-4.8472E-08" ixz="2.886E-08" iyy="7.8865E-05" iyz="-2.1848E-06" izz="0.00010995" />
+    </inertial>
+  </link>
+
+  <joint name="lidar_link_joint" type="fixed">
+    <origin xyz="0.165 0.0016853 0" rpy="0 0 1.5164" />   
+    <!-- rpy 0 0 -1.5164 -->
+    <parent link="base_link" />
+    <child link="lidar_link" />
+  </joint>
+
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Yellow</material>
+
+    <sensor name="laser" type="ray">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <ray>
+            <scan>          
+                <horizontal>
+                    <samples>360</samples>
+                    <!-- <resolution>0.5</resolution> -->
+                    <min_angle>-3.14</min_angle>
+                    <max_angle>0</max_angle>
+                </horizontal>
+            </scan>
+            <range>
+                <min>0.3</min>
+                <max>12</max>
+                <!-- <resoluion>0.05</resoluion> -->
+            </range>
+            <!-- <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+            </noise> -->
+        </ray>
+        <plugin name = "laser_controller" filename = "libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>${robot_namespace}</namespace>
+            <!-- <remapping>~/out:=/scan</remapping> -->
+            <remapping>~/out:=scan</remapping>    
+          </ros>
+            <output_type>sensor_msgs/LaserScan</output_type>
+            <frame_name>lidar_link</frame_name>
+        </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
