@@ -20,14 +20,12 @@ def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz')
 
     
-    urdf_file = os.path.join(pkg_path, 'designs', 'amr.urdf.xacro')
+    urdf_file = os.path.join(pkg_path, 'designs', 'my_robot.urdf')
 
     remappings = [
         ('/tf', 'tf'),
         ('/tf_static', 'tf_static'),
-        ('/cmd_vel', 'cmd_vel'),
-        ('/odom','odom'),
-        ('/map','map')]
+        ]
 
     # Declare launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -63,10 +61,10 @@ def generate_launch_description():
         ' else \"', os.path.join(pkg_path, 'rviz', 'namespaced_view.rviz'), '\"'
     ])
 
+    # robot_description = Command(['xacro ', urdf_file, ' robot_namespace:=', namespace, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
 
-    # Read the URDF
-    # robot_description = Command(['xacro ', urdf_file, ' robot_namespace:=', namespace, ' sim_mode:=', use_sim_time])
-    robot_description = Command(['xacro ', urdf_file, ' robot_namespace:=', namespace, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
+    with open(urdf_file, 'r') as infp:
+        robot_description = infp.read()
     
     rsp = Node(
         package='robot_state_publisher',
@@ -75,6 +73,7 @@ def generate_launch_description():
         namespace=namespace,
         output='screen',
         parameters=[{'robot_description': robot_description, 'use_sim_time': use_sim_time}],
+        # , 'publish_frequency': 50.0
         remappings=remappings
     )
 

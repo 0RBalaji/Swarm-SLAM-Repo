@@ -1,0 +1,323 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="twowheelbot">
+
+
+  <link name="base_footprint"/>
+
+  <joint name="chassis_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/base_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/base_link.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="5.65793860989747"/>
+      <inertia ixx="0.0209088158258865" ixy="-1.21570941586779E-06" ixz="-4.74576464436689E-07" iyy="0.0337922520357315" iyz="-6.19936087950491E-09" izz="0.0530796720169266"/>
+    </inertial>
+  </link>
+  <!-- Wheels -->
+  <link name="left_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/left_wheel.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.294117647058824 0.294117647058824 0.294117647058824 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/left_wheel.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.408827"/>
+      <inertia ixx="0.000714801628" ixy="1.37055E-13" ixz="-6.32708E-14" iyy="0.000714802" iyz="-1.37618E-13" izz="0.00136124"/>
+    </inertial>
+  </link>
+  <joint name="joint_tire_left" type="continuous">
+    <origin rpy="-1.5708 0 0" xyz="0 0.234 0.0304999999999984"/>
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <link name="right_wheel">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/right_wheel.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.294117647058824 0.294117647058824 0.294117647058824 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/right_wheel.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.408827478747941"/>
+      <inertia ixx="0.000714801628692349" ixy="-4.98728780255981E-13" ixz="-8.55481626564712E-14" iyy="0.000714801628470818" iyz="1.25253999026371E-13" izz="0.00136123756937644"/>
+    </inertial>
+  </link>
+  <joint name="joint_tire_right" type="continuous">
+    <origin rpy="1.5707963267948966 0 0" xyz="0 -0.234 0.0304999999999984"/>
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <axis xyz="0 0 -1"/>
+  </joint>
+
+  <!-- Caster Wheels -->
+  <link name="rf_caster">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rf_caster.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rf_caster.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.0131302037781976"/>
+      <inertia ixx="1.31770325266958E-06" ixy="-5.29431199926978E-23" ixz="2.24993126614424E-22" iyy="1.31770325266958E-06" iyz="-1.18236702448809E-22" izz="1.89555098822308E-06"/>
+    </inertial>
+  </link>
+  <joint name="rf_caster_joint" type="continuous">
+    <origin rpy="1.5707963267948966 0 0" xyz="0.121999999999999 -0.107 -0.028"/>
+    <parent link="base_link"/>
+    <child link="rf_caster"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="lf_caster">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lf_caster.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lf_caster.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.0131302037781976"/>
+      <inertia ixx="1.31770325266958E-06" ixy="0" ixz="1.52201232709757E-22" iyy="1.31770325266958E-06" iyz="2.05476734334866E-21" izz="1.89555098822308E-06"/>
+    </inertial>
+  </link>
+  <joint name="lf_caster_joint" type="continuous">
+    <origin rpy="-1.5707963267948966 0 0" xyz="0.121999999999999 0.107 -0.028"/>
+    <parent link="base_link"/>
+    <child link="lf_caster"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="rr_caster">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rr_caster.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/rr_caster.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.0131302037781976"/>
+      <inertia ixx="1.31770325266958E-06" ixy="-9.24232433334024E-37" ixz="-5.29395592033938E-23" iyy="1.31770325266958E-06" iyz="2.04611747395592E-21" izz="1.89555098822309E-06"/>
+    </inertial>
+  </link>
+  <joint name="rr_caster_joint" type="continuous">
+    <origin rpy="1.5707963267948966 0 0" xyz="-0.154 -0.107 -0.028"/>
+    <parent link="base_link"/>
+    <child link="rr_caster"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  <link name="lr_caster">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lr_caster.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.25098 0.25098 0.25098 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lr_caster.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01313"/>
+      <inertia ixx="1.3177E-06" ixy="7.5232E-37" ixz="1.125E-22" iyy="1.3177E-06" iyz="2.0589E-21" izz="1.8956E-06"/>
+    </inertial>
+  </link>
+  <joint name="lr_caster_joint" type="continuous">
+    <origin rpy="-1.5707963267948966 0 0" xyz="-0.154 0.107 -0.028"/>
+    <parent link="base_link"/>
+    <child link="lr_caster"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  
+  <!-- <gazebo reference="base_link">
+    <material>Gazebo/Green</material>
+  </gazebo> -->
+  <!-- <gazebo reference="left_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo> -->
+  <!-- <gazebo reference="right_wheel">
+    <material>Gazebo/Black</material>
+  </gazebo> -->
+  <!-- <gazebo reference="lf_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo> -->
+  <!-- <gazebo reference="lr_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo> -->
+  <!-- <gazebo reference="rf_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo> -->
+  <!-- <gazebo reference="rr_caster">
+    <material>Gazebo/Orange</material>
+    <mu1 value="0.001"/>
+    <mu2 value="0.001"/>
+  </gazebo> -->
+  <!-- Lidar Joint -->
+  <link name="lidar_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lidar_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.75294 0.75294 0.75294 0.4"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://twowheelbot/meshes/lidar_link.STL"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.16538"/>
+      <inertia ixx="7.519E-05" ixy="-4.8472E-08" ixz="2.886E-08" iyy="7.8865E-05" iyz="-2.1848E-06" izz="0.00010995"/>
+    </inertial>
+  </link>
+  <joint name="lidar_link_joint" type="fixed">
+    <origin rpy="0 0 -1.5164" xyz="-0.165 0.0016853 0"/>
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <!-- <axis xyz="0 0 1"/> -->
+  </joint>
+  <!-- <gazebo reference="lidar_link">
+    <material>Gazebo/Yellow</material>
+    <sensor name="laser" type="ray">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>0.5</resolution>
+            <min_angle>-3.14</min_angle>
+            <max_angle>0</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.3</min>
+          <max>12</max>
+          <resoluion>0.05</resoluion>
+        </range>
+        <noise>
+                <type>gaussian</type>
+                <mean>0.0</mean>
+                <stddev>0.01</stddev>
+            </noise>
+      </ray>
+      <plugin filename="libgazebo_ros_ray_sensor.so" name="laser_controller">
+        <ros>
+          <namespace></namespace>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo> -->
+  <!-- <gazebo>
+    <plugin name = "diff_drive" filename = "libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace></namespace>
+        <remapping>/tf:=tf</remapping>
+        <remapping>/tf_static:=tf_static</remapping>
+      </ros>
+      <left_joint>joint_tire_left</left_joint>
+      <right_joint>joint_tire_right</right_joint>
+      <wheel_separation>0.468</wheel_separation>
+      <wheel_diameter>0.07458</wheel_diameter>
+      <max_wheel_torque>1200</max_wheel_torque>
+      <max_wheel_acceleration>100.0</max_wheel_acceleration>
+      <command_topic>cmd_vel</command_topic>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publist_wheel_tf>true</publist_wheel_tf>
+    </plugin>
+  </gazebo> -->
+</robot>

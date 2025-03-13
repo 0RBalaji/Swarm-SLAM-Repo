@@ -20,6 +20,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <gazebo_ros gazebo_model_path="/home/balaji/newamr/install/twowheelbot/share/" />
+    <gazebo_ros gazebo_model_path="/home/l223/multiamr/install/twowheelbot/share/" />
   </export>
 </package>

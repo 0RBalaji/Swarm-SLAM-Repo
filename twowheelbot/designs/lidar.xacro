@@ -6,7 +6,7 @@
   <!-- Lidar Joint -->
   <link name="lidar_link">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 -0.025" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
       </geometry>
@@ -15,21 +15,20 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 -0.025" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://twowheelbot/meshes/lidar_link.STL" />
       </geometry>
     </collision>
     <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 -0.025" rpy="0 0 0" />
       <mass value="0.16538" />
       <inertia ixx="7.519E-05" ixy="-4.8472E-08" ixz="2.886E-08" iyy="7.8865E-05" iyz="-2.1848E-06" izz="0.00010995" />
     </inertial>
   </link>
 
   <joint name="lidar_link_joint" type="fixed">
-    <origin xyz="0.165 0.0016853 0" rpy="0 0 1.5164" />   
-    <!-- rpy 0 0 -1.5164 -->
+    <origin xyz="-0.165 0.0016853 0.025" rpy="0 0 -1.5164" />   
     <parent link="base_link" />
     <child link="lidar_link" />
   </joint>
@@ -40,7 +39,7 @@
     <sensor name="laser" type="ray">
         <pose>0 0 0 0 0 0</pose>
         <visualize>false</visualize>
-        <update_rate>10</update_rate>
+        <update_rate>10.0</update_rate>
         <ray>
             <scan>          
                 <horizontal>
@@ -63,8 +62,7 @@
         </ray>
         <plugin name = "laser_controller" filename = "libgazebo_ros_ray_sensor.so">
           <ros>
-            <namespace>${robot_namespace}</namespace>
-            <!-- <remapping>~/out:=/scan</remapping> -->
+            <!-- <namespace>${robot_namespace}</namespace> -->
             <remapping>~/out:=scan</remapping>    
           </ros>
             <output_type>sensor_msgs/LaserScan</output_type>

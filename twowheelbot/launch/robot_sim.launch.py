@@ -10,7 +10,6 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     pkg_path = get_package_share_directory('twowheelbot')
-    launch_dir = os.path.join(pkg_path, 'launch')
 
     namespace = LaunchConfiguration('namespace')
     use_namespace = LaunchConfiguration('use_namespace')
@@ -22,21 +21,25 @@ def generate_launch_description():
 
     use_ros2_control = LaunchConfiguration('use_ros2_control')
 
+    # sdf_file = os.path.join(get_package_share_directory('rmf_fleet'), 'models', 'twowheelbot', 'model.sdf')
+    sdf_file = os.path.join(pkg_path, 'designs', 'twowheelbot', 'model.sdf')
+
     pose = {
         'x': LaunchConfiguration('x_pose', default='2.5'),
         'y': LaunchConfiguration('y_pose', default='4'),
         'z': LaunchConfiguration('z_pose', default='0.05'),
         'R': LaunchConfiguration('roll', default='0.00'),
         'P': LaunchConfiguration('pitch', default='0.00'),
-        'Y': LaunchConfiguration('yaw', default='-3.142')
+        'Y': LaunchConfiguration('yaw', default='0.0')
     }
 
     remappings = [
         ('/tf', 'tf'),
         ('/tf_static', 'tf_static'),
-        ('/cmd_vel', 'cmd_vel'),
-        ('/odom','odom'),
-        ('/map','map')]
+        # ('/cmd_vel', 'cmd_vel'),
+        # ('/odom','odom'),
+        # ('/map','map')
+        ]
 
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace',
@@ -80,7 +83,7 @@ def generate_launch_description():
     gazebo_params_file = os.path.join(pkg_path, 'config','gazebo_params.yaml')
     
     rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(launch_dir,'rsp.launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch' ,'rsp.launch.py')),
         launch_arguments = {'use_sim_time': use_sim_time, 'namespace':namespace, 'use_namespace':use_namespace, 'use_ros2_control':use_ros2_control, 'use_rviz':use_rviz}.items()
     )
 
@@ -90,11 +93,10 @@ def generate_launch_description():
         launch_arguments={'world': world}.items()
     )
 
-    if use_namespace == True:
-        robot_description_topic = [TextSubstitution(text='/'), LaunchConfiguration('namespace'), TextSubstitution(text='/robot_description')]
-    else:
-        robot_description_topic = TextSubstitution(text='robot_description')
-    # robot_description_topic = [LaunchConfiguration('namespace'), TextSubstitution(text='/robot_description')]
+    # if use_namespace == True:
+    #     robot_description_topic = [TextSubstitution(text='/'), LaunchConfiguration('namespace'), TextSubstitution(text='/robot_description')]
+    # else:
+    #     robot_description_topic = TextSubstitution(text='robot_description')
 
     # Spawn robot in Gazebo with namespace
     spawn = Node(
@@ -103,7 +105,8 @@ def generate_launch_description():
         namespace=namespace,
         output='screen',
         arguments=[
-            '-topic', robot_description_topic,
+            '-file', sdf_file,
+            # '-topic', robot_description_topic,
             '-entity', namespace,
             '-x', pose['x'], '-y', pose['y'], '-z', pose['z'],
             '-R', pose['R'], '-P', pose['P'], '-Y', pose['Y']
@@ -149,9 +152,9 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     ld.add_action(rsp)
-    ld.add_action(gazebo)
+    # ld.add_action(gazebo)
     
-    ld.add_action(spawn)
+    # ld.add_action(spawn)
     ld.add_action(twist_mux)
     ld.add_action(diff_drive_spawner)
     ld.add_action(joint_broad_spawner)
