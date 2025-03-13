@@ -27,21 +27,22 @@ def generate_launch_description():
 
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static'),
-                  ('/scan','scan'),
-                  ('/map','map'),
-                  ('/map_metadata','map_metadata'),
-                  ('/goal_pose','goal_pose'),
-                  ('/global_costmap','global_costmap'),
-                  ('/local_costmap','local_costmap'),
-                  ('/cmd_vel','cmd_vel'),
-                  ('/smoother_server','smoother_server'),
-                  ('/odom','odom'),
-                  ('/controller_server','controller_server'),
-                  ('/planner_server','planner_server'),
-                  ('/behavior_server','behavior_server'),
-                  ('/bt_navigator','bt_navigator'),
-                  ('/waypoint_follower','waypoint_follower'),
-                  ('/velocity_smoother','velocity_smoother')]
+                #   ('/scan','scan'),
+                #   ('/map','map'),
+                #   ('/map_metadata','map_metadata'),
+                #   ('/goal_pose','goal_pose'),
+                #   ('/global_costmap','global_costmap'),
+                #   ('/local_costmap','local_costmap'),
+                #   ('/cmd_vel','cmd_vel'),
+                #   ('/smoother_server','smoother_server'),
+                #   ('/odom','odom'),
+                #   ('/controller_server','controller_server'),
+                #   ('/planner_server','planner_server'),
+                #   ('/behavior_server','behavior_server'),
+                #   ('/bt_navigator','bt_navigator'),
+                #   ('/waypoint_follower','waypoint_follower'),
+                #   ('/velocity_smoother','velocity_smoother')
+                  ]
 
     
     # Create temporary YAML files with substitutions

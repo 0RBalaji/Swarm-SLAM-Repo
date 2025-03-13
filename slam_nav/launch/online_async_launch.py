@@ -14,7 +14,7 @@ def generate_launch_description():
     params_file = LaunchConfiguration('params_file')
     map_yaml_file = LaunchConfiguration('map')
     namespace = LaunchConfiguration('namespace')
-    default_params_file = os.path.join(get_package_share_directory("slam_nav"),'config', 'mapper_params_online_async.yaml')
+    default_params_file = os.path.join(get_package_share_directory('slam_nav'),'config', 'mapper_params_online_async.yaml')
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
         'use_sim_time',
@@ -54,14 +54,16 @@ def generate_launch_description():
             {'odom_frame': 'odom'},
             {'base_frame': 'base_footprint'},
             {'scan_topic': 'scan'},
-            # {'map_yaml_file':'/home/balaji/newamr/workshop_twowheelbot_serail'},
+            # {'map_yaml_file':'/home/balaji/multiamr/workshop_twowheelbot_serail'},
         ],
-        remappings=[('/scan','scan'),
-                    ('/map','map'),
-                    ('/map_metadata','map_metadata'),
+        remappings=[
+                    # ('/scan','scan'),
+                    # ('/map','map'),
+                    # ('/map_metadata','map_metadata'),
                     ('/tf','tf'),
                     ('/tf_static','tf_static'),
-                    ('/odom','odom')]
+                    # ('/odom','odom')
+                    ]
         )
 
     ld = LaunchDescription()
