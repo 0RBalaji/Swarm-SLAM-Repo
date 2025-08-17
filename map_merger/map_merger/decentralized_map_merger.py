@@ -44,8 +44,9 @@ class DecentralizedMapMerger(Node):
 
         self.shared_map = {}  # Store remote maps by namespace
         self.local_delta = None
-        self.base_map = None
+        # self.base_map = None
         self.merged_map = None
+        self.subscribed_namespaces = set()
 
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
@@ -72,32 +73,30 @@ class DecentralizedMapMerger(Node):
             self.qos_profile
         )
 
-        # self.merged_map = self.local_map
-        # self.merged_map_pub.publish(self.merged_map)
-        
-        # self.metadata_pub = self.create_publisher(
-        #     MapMetaData, 
-        #     f'/{self.namespace}/map_metadata', 
-        #     self.qos_profile)
         self.create_timer(5.0, self.discover_deltas)
+
+        self.get_logger().info(f"Map merger initialized for namespace: {self.namespace}")
 
     def local_map_callback(self, msg):
         self.local_delta = msg
-        self.get_logger().info("Ok, its here")
         self.map_merge()
 
     def discover_deltas(self):
         """Discover and subscribe to new namespaces."""
-        active_topics = self.get_topic_names_and_types()
-        remote_topics = [t[0] for t in active_topics if t[0].endswith('/map_changes')]
+        try:
+            active_topics = self.get_topic_names_and_types()
+            remote_topics = [t[0] for t in active_topics if t[0].endswith('/map_changes')]
 
-        for topic in remote_topics:
-            ns = topic.split('/')[1]
-            if ns and ns != self.namespace and ns not in self.shared_map:
-            # if ns and ns not in self.shared_map:
-                self.shared_map[ns] = None
-                self.create_subscription(OccupancyGrid, topic, lambda msg, ns=ns: self.remote_map_callback(msg, ns), 10)
-                self.get_logger().info(f"Subscribed to remote topics-> /{ns}/map_chnages")
+            for topic in remote_topics:
+                ns = topic.split('/')[1]
+                if ns and ns != self.namespace and ns not in self.shared_map:
+                # if ns and ns not in self.shared_map:
+                    self.shared_map[ns] = None
+                    self.create_subscription(OccupancyGrid, topic, lambda msg, ns=ns: self.remote_map_callback(msg, ns), 10)
+                    self.get_logger().info(f"Subscribed to remote topics-> /{ns}/map_chnages")
+            
+        except Exception as e:
+            self.get_logger().warning(f"Error during discovery: {str(e)}")
 
     def remote_map_callback(self, msg, ns):
         self.shared_map[ns] = msg
@@ -197,8 +196,6 @@ class DecentralizedMapMerger(Node):
         merged_map.header.stamp = self.get_clock().now().to_msg()
 
         self.merged_map_pub.publish(merged_map)
-
-        self.get_logger().info("Published See Pa")
         
         # self.metadata_pub.publish(metadata)
         return True

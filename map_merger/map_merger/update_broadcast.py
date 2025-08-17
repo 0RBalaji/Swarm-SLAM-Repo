@@ -16,14 +16,14 @@ class MapUpdateBroadcast(Node):
         # Declare parameters with proper types
         self.declare_parameter('namespace', '', ParameterDescriptor(description='Robot namespace'))
         self.declare_parameter('change_buffer', 2, ParameterDescriptor(description='Bounding box buffer size'))
-        self.declare_parameter('ignore_unexplored', True, ParameterDescriptor(description='Filter unexplored areas'))
-        self.declare_parameter('max_delta_size', 256, ParameterDescriptor(description='Max allowed cropped dimension'))
+        # self.declare_parameter('ignore_unexplored', True, ParameterDescriptor(description='Filter unexplored areas'))
+        # self.declare_parameter('max_delta_size', 256, ParameterDescriptor(description='Max allowed cropped dimension'))
 
         # Retrieve parameters with type casting
         self.namespace = self.get_parameter('namespace').get_parameter_value().string_value
         self.buffer_size = self.get_parameter('change_buffer').get_parameter_value().integer_value
-        self.ignore_unexplored = self.get_parameter('ignore_unexplored').get_parameter_value().bool_value
-        self.max_delta_size = self.get_parameter('max_delta_size').get_parameter_value().integer_value
+        # self.ignore_unexplored = self.get_parameter('ignore_unexplored').get_parameter_value().bool_value
+        # self.max_delta_size = self.get_parameter('max_delta_size').get_parameter_value().integer_value
 
         if not self.namespace:
             self.get_logger().fatal("Namespace parameter required. Exiting.")
@@ -31,8 +31,8 @@ class MapUpdateBroadcast(Node):
             return
 
         # Configure QoS profile
-        self.qos = QoSProfile(
-            depth=10,
+        qos = QoSProfile(
+            depth=50,
             durability=DurabilityPolicy.TRANSIENT_LOCAL,
             reliability=ReliabilityPolicy.RELIABLE
         )
@@ -41,7 +41,7 @@ class MapUpdateBroadcast(Node):
         self.delta_pub = self.create_publisher(
             OccupancyGrid,
             f'/{self.namespace}/map_changes',
-            self.qos
+            qos
         )
         
         # self.map_client = self.create_client(GetMap, f'/{self.namespace}/map_server/get_map')
@@ -50,34 +50,34 @@ class MapUpdateBroadcast(Node):
             OccupancyGrid,
             f'/{self.namespace}/map',
             self.map_callback,
-            self.qos
+            qos
         )
 
         # State management
         self.previous_map = None
         self.current_map = None
-        self.map_lock = threading.Lock()
+        # self.map_lock = threading.Lock()
 
          # Timer to periodically request the map
-        # self.create_timer(3.0, self.request_map)  # Calls the service every 2 seconds
+        # self.create_timer(5.0, self.request_map)  # Calls the service every 2 seconds
 
-    def request_map(self):
-        """Request map using GetMap service"""
-        if not self.map_client.wait_for_service(timeout_sec=2.0):
-            self.get_logger().warn("Map service not available")
-            return
+    # def request_map(self):
+    #     """Request map using GetMap service"""
+    #     if not self.map_client.wait_for_service(timeout_sec=2.0):
+    #         self.get_logger().warn("Map service not available")
+    #         return
 
-        req = GetMap.Request()
-        future = self.map_client.call_async(req)
-        future.add_done_callback(self.process_map_response)
+    #     req = GetMap.Request()
+    #     future = self.map_client.call_async(req)
+    #     future.add_done_callback(self.process_map_response)
 
-    def process_map_response(self, future):
-        """Process the received map from GetMap service"""
-        try:
-            response = future.result()
-            self.map_callback(response.map)
-        except Exception as e:
-            self.get_logger().error(f"Service call failed: {str(e)}")
+    # def process_map_response(self, future):
+    #     """Process the received map from GetMap service"""
+    #     try:
+    #         response = future.result()
+    #         self.map_callback(response.map)
+    #     except Exception as e:
+    #         self.get_logger().error(f"Service call failed: {str(e)}")
 
     def small_game(self, prev_map):
         if prev_map:
@@ -87,46 +87,46 @@ class MapUpdateBroadcast(Node):
 
     def map_callback(self, msg):
         """Process incoming map updates"""
-        with self.map_lock:
-            if not self.validate_map(msg):
+        # with self.map_lock:
+        # if not self.validate_map(msg):
+        #     return
+
+        if not self.previous_map:
+            self.previous_map = msg
+            self.get_logger().info("Initial map stored")
+            self.small_game(self.previous_map)
+            return
+
+        try:
+            aligned_prev, aligned_new = self.align_maps(self.previous_map, msg)
+            delta = self.detect_changes(aligned_prev, aligned_new)
+            
+            if not np.any(delta != -1):
+                self.get_logger().debug("No significant changes detected")
                 return
 
-            if not self.previous_map:
-                self.previous_map = msg
-                self.get_logger().info("Initial map stored")
-                self.small_game(self.previous_map)
+            bbox = self.calculate_bounding_box(delta)
+            if not bbox:
                 return
 
-            try:
-                aligned_prev, aligned_new = self.align_maps(self.previous_map, msg)
-                delta = self.detect_changes(aligned_prev, aligned_new)
-                
-                if not np.any(delta != -1):
-                    self.get_logger().debug("No significant changes detected")
-                    return
+            cropped_delta = self.crop_delta(delta, bbox)
+            # if self.validate_crop_size(cropped_delta):
+            self.publish_change(cropped_delta, msg.info, msg.header, bbox)
 
-                bbox = self.calculate_bounding_box(delta)
-                if not bbox:
-                    return
+            self.previous_map = msg
 
-                cropped_delta = self.crop_delta(delta, bbox)
-                if self.validate_crop_size(cropped_delta):
-                    self.publish_change(cropped_delta, msg.info, msg.header, bbox)
+        except Exception as e:
+            self.get_logger().error(f"Map processing failed: {str(e)}")
 
-                self.previous_map = msg
-
-            except Exception as e:
-                self.get_logger().error(f"Map processing failed: {str(e)}")
-
-    def validate_map(self, map_msg):
-        """Validate map message integrity"""
-        if not map_msg.data:
-            self.get_logger().warn("Empty map received")
-            return False
-        if map_msg.info.resolution <= 0:
-            self.get_logger().error("Invalid map resolution")
-            return False
-        return True
+    # def validate_map(self, map_msg):
+    #     """Validate map message integrity"""
+    #     if not map_msg.data:
+    #         self.get_logger().warn("Empty map received")
+    #         return False
+    #     if map_msg.info.resolution <= 0:
+    #         self.get_logger().error("Invalid map resolution")
+    #         return False
+    #     return True
 
     def align_maps(self, prev_map, new_map):
         """Align maps to common coordinate system"""
@@ -200,10 +200,10 @@ class MapUpdateBroadcast(Node):
 
     def detect_changes(self, prev_grid, new_grid):
         """Identify meaningful changes between maps"""
-        if self.ignore_unexplored:
-            mask = (prev_grid != new_grid) & (new_grid != -1)
-        else:
-            mask = (prev_grid != new_grid)
+        # if self.ignore_unexplored:
+        #     mask = (prev_grid != new_grid) & (new_grid != -1)
+        # else:
+        mask = (prev_grid != new_grid)
         return np.where(mask, new_grid, -1)
 
     def calculate_bounding_box(self, delta_grid):
@@ -228,13 +228,13 @@ class MapUpdateBroadcast(Node):
         min_x, min_y, max_x, max_y = bbox
         return delta_grid[min_y:max_y+1, min_x:max_x+1]
 
-    def validate_crop_size(self, cropped_grid):
-        """Ensure delta size within limits"""
-        if cropped_grid.shape[0] > self.max_delta_size or \
-           cropped_grid.shape[1] > self.max_delta_size:
-            self.get_logger().warn(f"Oversized delta ignored: {cropped_grid.shape}")
-            return False
-        return True
+    # def validate_crop_size(self, cropped_grid):
+    #     """Ensure delta size within limits"""
+    #     if cropped_grid.shape[0] > self.max_delta_size or \
+    #        cropped_grid.shape[1] > self.max_delta_size:
+    #         self.get_logger().warn(f"Oversized delta ignored: {cropped_grid.shape}")
+    #         return False
+    #     return True
 
     def publish_change(self, delta_grid, map_info, header, bbox):
         """Publish cropped changes"""
