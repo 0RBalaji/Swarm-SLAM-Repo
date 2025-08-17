@@ -160,7 +160,7 @@ Visualization Manager:
         Durability Policy: Transient Local
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: <robot_namespace>/map
+        Value: <robot_namespace>/merged_map
       Use Timestamp: false
       Value: true
     - Alpha: 1

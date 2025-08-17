@@ -7,13 +7,13 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /LaserScan1
       Splitter Ratio: 0.4340044856071472
     Tree Height: 351
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
-    Expanded: ~
+    Expanded:
+      - /2D Pose Estimate1
     Name: Tool Properties
     Splitter Ratio: 0.5886790156364441
   - Class: rviz_common/Views
@@ -122,9 +122,9 @@ Visualization Manager:
         base_footprint:
           Value: true
         base_link:
-          Value: false
+          Value: true
         left_wheel:
-          Value: false
+          Value: true
         lf_caster:
           Value: false
         lidar_link:
@@ -151,19 +151,7 @@ Visualization Manager:
           odom:
             base_footprint:
               base_link:
-                left_wheel:
-                  {}
-                lf_caster:
-                  {}
                 lidar_link:
-                  {}
-                lr_caster:
-                  {}
-                rf_caster:
-                  {}
-                right_wheel:
-                  {}
-                rr_caster:
                   {}
       Update Interval: 0
       Value: true
@@ -225,7 +213,7 @@ Visualization Manager:
     - Alpha: 1
       Class: nav2_rviz_plugins/ParticleCloud
       Color: 0; 180; 0
-      Enabled: false
+      Enabled: true
       Max Arrow Length: 0.30000001192092896
       Min Arrow Length: 0.019999999552965164
       Name: Amcl Particle Swarm
@@ -237,7 +225,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /particle_cloud
-      Value: false
+      Value: true
     - Class: rviz_common/Group
       Displays:
         - Alpha: 0.30000001192092896
@@ -302,7 +290,7 @@ Visualization Manager:
             Reliability Policy: Reliable
             Value: /global_costmap/published_footprint
           Value: true
-      Enabled: false
+      Enabled: true
       Name: Global Planner
     - Class: rviz_common/Group
       Displays:
@@ -353,7 +341,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /plan
+            Value: /local_plan
           Value: true
         - Class: rviz_default_plugins/MarkerArray
           Enabled: false
@@ -380,10 +368,10 @@ Visualization Manager:
             Reliability Policy: Reliable
             Value: /local_costmap/published_footprint
           Value: true
-      Enabled: false
+      Enabled: true
       Name: Controller
     - Class: rviz_default_plugins/MarkerArray
-      Enabled: false
+      Enabled: true
       Name: MarkerArray
       Namespaces:
         {}
@@ -393,7 +381,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /waypoints
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -424,16 +412,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 21.952545166015625
+      Distance: 11.585058212280273
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -1.0151126384735107
-        Y: 3.2947843074798584
-        Z: -0.006097604986280203
+        X: -0.17565813660621643
+        Y: 6.174687385559082
+        Z: -0.005241448991000652
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -442,7 +430,7 @@ Visualization Manager:
       Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz_default_plugins)
-      Yaw: 3.1473875045776367
+      Yaw: 3.117387294769287
     Saved: ~
 Window Geometry:
   Displays:

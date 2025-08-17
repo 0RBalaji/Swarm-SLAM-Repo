@@ -7,32 +7,33 @@
 
     <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
       <ros>
-        <!-- <namespace>botA</namespace> -->
+        <!-- <namespace/> -->
         <remapping>/tf:=tf</remapping>
         <remapping>/tf_static:=tf_static</remapping>
       </ros>
       <left_joint>joint_tire_left</left_joint>
       <right_joint>joint_tire_right</right_joint>
       <wheel_separation>0.468</wheel_separation>
-      <wheel_diameter>0.2</wheel_diameter>
-      <max_wheel_torque>50</max_wheel_torque>
-      <max_wheel_acceleration>3.3</max_wheel_acceleration>
+      <wheel_diameter>0.07458</wheel_diameter>
+      <max_wheel_torque>1200</max_wheel_torque>
+      <max_wheel_acceleration>100.0</max_wheel_acceleration>
       <command_topic>cmd_vel</command_topic>
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
-      <publist_wheel_tf>true</publist_wheel_tf>
+      <publist_wheel_tf>false</publist_wheel_tf>
+      <!-- <update_rate>50.0</update_rate> -->
     </plugin>
 
     <!-- <plugin name="amr" filename="libslotcar.so">
-      <nominal_drive_speed>8.0</nominal_drive_speed>
+      <nominal_drive_speed>10.0</nominal_drive_speed>
       <nominal_drive_acceleration>3.0</nominal_drive_acceleration>
       <max_drive_acceleration>4.0</max_drive_acceleration>
-      <nominal_turn_speed>7.5</nominal_turn_speed>
+      <nominal_turn_speed>5.5</nominal_turn_speed>
       <nominal_turn_acceleration>3.1</nominal_turn_acceleration>
       <max_turn_acceleration>3.3</max_turn_acceleration>
-      <tire_radius>0.2</tire_radius>
+      <tire_radius>0.1</tire_radius>
       <base_width>0.45</base_width>
       <stop_distance>0.75</stop_distance>
       <stop_radius>0.75</stop_radius>
@@ -212,29 +213,25 @@
       </visual>
     </link>
 
-    <plugin name="joint_state_plug" filename="libgazebo_ros_joint_state_publisher.so">
+    <!-- <plugin name="joint_state_plug" filename="libgazebo_ros_joint_state_publisher.so">
       <ros>
-        <!-- <remapping>~/out:=joint_states</remapping> -->
+        <remapping>~/out:=joint_states</remapping>
       </ros>
      <update_rate>30</update_rate>
       <joint_name>joint_tire_left</joint_name>
       <joint_name>joint_tire_right</joint_name>
-    </plugin> 
+      <joint_name>rr_caster</joint_name>
+      <joint_name>rf_caster</joint_name>
+      <joint_name>lr_caster</joint_name>
+      <joint_name>lf_caster</joint_name>
+    </plugin>  -->
 
     <joint name='lidar_joint' type='fixed'>
       <parent>base_link</parent>
       <child>lidar_link</child>
-      <axis>
-        <xyz>0 0 0</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-      </axis>
+      <!-- <axis>
+        <xyz>0 0 1</xyz>
+      </axis> -->
     </joint>
     <link name='lidar_link'>
       <pose>-0.165 0.0016853 0 0 0 -1.5164</pose>
@@ -283,9 +280,9 @@
         </material>
       </visual>
       <sensor name='laser' type='ray'>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <update_rate>10</update_rate>
-        <pose> 0 0 0.015 0 0 0</pose>
+        <pose> 0 0 0.02 0 0 0</pose>
         <ray>
           <scan>
             <horizontal>
@@ -297,13 +294,13 @@
           </scan>
           <range>
             <min>0.3</min>
-            <max>12</max>
-            <resolution>0.05</resolution>
+            <max>9</max>
+            <!-- <resolution>0.05</resolution> -->
           </range>
         </ray>
         <plugin name='laser_controller' filename='libgazebo_ros_ray_sensor.so'>
           <ros>
-            <!-- <namespace>botA</namespace> -->
+            <!-- <namespace/> -->
             <remapping>~/out:=scan</remapping>
           </ros>
           <output_type>sensor_msgs/LaserScan</output_type>
@@ -314,12 +311,12 @@
 
     <!-- Caster's -->
 
-    <joint name='lf_caster_joint' type='fixed'>
+    <joint name='lf_caster_joint' type='revolute'>
       <parent>base_link</parent>
       <child>lf_caster</child>
-      <!-- <axis>
+      <axis>
         <xyz>0 0 1</xyz>
-      </axis> -->
+      </axis>
     </joint>
     <link name='lf_caster'>
       <pose>0.122 0.107 -0.028 -1.5708 0 0</pose>
@@ -403,13 +400,13 @@
         </geometry>
         <surface>
           <contact>
-            <ode/>
-          </contact>
-          <friction>
             <ode>
               <mu>0.001</mu>
               <mu2>0.001</mu2>
             </ode>
+          </contact>
+          <friction>
+            <ode/>
           </friction>
         </surface>
       </collision>
@@ -430,12 +427,12 @@
       </visual>
     </link>
 
-    <joint name='rf_caster_joint' type='fixed'>
+    <joint name='rf_caster_joint' type='revolute'>
       <parent>base_link</parent>
       <child>rf_caster</child>
-      <!-- <axis>
+      <axis>
         <xyz>0 0 1</xyz>
-      </axis> -->
+      </axis>
     </joint>
     <link name='rf_caster'>
       <pose>0.122 -0.107 -0.028 1.5708 0 0</pose>
@@ -488,12 +485,12 @@
       </visual>
     </link>
 
-    <joint name='rr_caster_joint' type='fixed'>
+    <joint name='rr_caster_joint' type='revolute'>
       <parent>base_link</parent>
       <child>rr_caster</child>
-      <!-- <axis>
+      <axis>
         <xyz>0 0 1</xyz>
-      </axis> -->
+      </axis>
     </joint>
     <link name='rr_caster'>
       <pose>-0.154 -0.107 -0.028 1.5708 0 0</pose>

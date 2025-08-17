@@ -12,15 +12,12 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
-from launch.launch_description_sources import AnyLaunchDescriptionSource
 
 def generate_launch_description():
     # Get the launch directory
     pkg_path = get_package_share_directory('slam_nav')
-    # merge_path = get_package_share_directory('map_merger')
+    merge_path = get_package_share_directory('map_merger')
     launch_dir = os.path.join(pkg_path, 'launch')
-
-    # rmf_dir = os.path.join(get_package_share_directory('rmf_pro'))
 
     robot_pkg = LaunchConfiguration('robot_pkg')
 
@@ -43,14 +40,14 @@ def generate_launch_description():
     # ]
 
     robots = [
-        # {'name': 'botA', 'x_pose': 17.259089574451416, 'y_pose': -8.986688946733075, 'z_pose': 0.045,
-        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0},
-        # {'name': 'botB', 'x_pose': 17.00991550716311, 'y_pose': -3.0730820241987633, 'z_pose': 0.045,
-        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0},
-        {'name': 'botA', 'x_pose': 4.5, 'y_pose': 1.0, 'z_pose': 0.045,
-                           'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0},
+        {'name': 'botA', 'x_pose': 3.0, 'y_pose': 2.5, 'z_pose': 0.045,
+                           'roll': 0.0, 'pitch': 0.0, 'yaw': -3.142},
+        # {'name': 'botB', 'x_pose': 3.0, 'y_pose': 5.5, 'z_pose': 0.045,
+        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': -3.142},
+        # {'name': 'robotC', 'x_pose': 4.5, 'y_pose': 1.0, 'z_pose': 0.045,
+        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': -3.142},
         # {'name': 'robotD', 'x_pose': 4.5, 'y_pose': 7, 'z_pose': 0.045,
-        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0}
+        #                    'roll': 0.0, 'pitch': 0.0, 'yaw': -3.142}
     ]
 
 
@@ -62,6 +59,7 @@ def generate_launch_description():
     map_yaml_file = LaunchConfiguration('map')
 
     # autostart = LaunchConfiguration('autostart')
+    use_robot_state_pub = LaunchConfiguration('use_robot_state_pub')
     use_rviz = LaunchConfiguration('use_rviz')
     use_ros2_control = LaunchConfiguration('use_ros2_control')
     log_settings = LaunchConfiguration('log_settings', default='true')
@@ -81,7 +79,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(pkg_path, 'ros2_map_map.yaml'),
+        default_value=os.path.join(pkg_path, 'warehouse_twowheelbot_save.yaml'),
         description='Full path to map file to load',
     )
 
@@ -89,6 +87,12 @@ def generate_launch_description():
         'autostart',
         default_value='false',
         description='Automatically startup the stacks',
+    )
+
+    declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
+        'use_robot_state_pub',
+        default_value='True',
+        description='Whether to start the robot state publisher',
     )
 
     declare_use_rviz_cmd = DeclareLaunchArgument(
@@ -162,6 +166,10 @@ def generate_launch_description():
                     condition=IfCondition(log_settings),
                     msg=[robot['name'], ' params yaml: ', params_file],
                 ),
+                LogInfo(
+                    condition=IfCondition(log_settings),
+                    msg=[robot['name'],' using robot state pub: ',use_robot_state_pub],
+                ),
                 # LogInfo(
                 #     condition=IfCondition(log_settings),
                 #     msg=[robot['name']], ' autostart: ', autostart
@@ -177,11 +185,12 @@ def generate_launch_description():
     ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_map_yaml_cmd)
+    ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_use_ros2_control_cmd)
 
     ld.add_action(start_gz_server_cmd)
-    ld.add_action(start_gz_client_cmd)
+    # ld.add_action(start_gz_client_cmd)
 
     for simulation_instance_cmd in nav_instances_cmds:
         ld.add_action(simulation_instance_cmd)

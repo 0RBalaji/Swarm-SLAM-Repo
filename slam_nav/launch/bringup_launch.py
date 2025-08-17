@@ -18,8 +18,6 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration('namespace')
-    use_namespace = LaunchConfiguration('use_namespace')
-    slam = LaunchConfiguration('slam')
     map_yaml_file = LaunchConfiguration('map')
     use_sim_time = LaunchConfiguration('use_sim_time')
     params_file = LaunchConfiguration('params_file')
@@ -28,7 +26,7 @@ def generate_launch_description():
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static'),
                 #   ('/scan','scan'),
-                #   ('/map','map'),
+                  ('/map','merged_map'),
                 #   ('/map_metadata','map_metadata'),
                 #   ('/goal_pose','goal_pose'),
                 #   ('/global_costmap','global_costmap'),
@@ -114,7 +112,7 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(launch_dir, 'online_async_launch.py')),
-            condition=IfCondition(slam),
+            # condition=IfCondition(slam),
             launch_arguments={'namespace': namespace,
                               'use_sim_time': use_sim_time,
                               'params_file': params_file}.items()),

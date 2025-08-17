@@ -20,7 +20,7 @@ def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz')
 
     
-    urdf_file = os.path.join(pkg_path, 'designs', 'my_robot.urdf')
+    urdf_file = os.path.join(pkg_path, 'designs', 'amr.urdf.xacro')
 
     remappings = [
         ('/tf', 'tf'),
@@ -61,10 +61,10 @@ def generate_launch_description():
         ' else \"', os.path.join(pkg_path, 'rviz', 'namespaced_view.rviz'), '\"'
     ])
 
-    # robot_description = Command(['xacro ', urdf_file, ' robot_namespace:=', namespace, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
+    robot_description = Command(['xacro ', urdf_file, ' robot_namespace:=', namespace, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
 
-    with open(urdf_file, 'r') as infp:
-        robot_description = infp.read()
+    # with open(urdf_file, 'r') as infp:
+    #     robot_description = infp.read()
     
     rsp = Node(
         package='robot_state_publisher',

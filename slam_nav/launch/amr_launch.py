@@ -36,24 +36,15 @@ def generate_launch_description():
     use_simulator = LaunchConfiguration('use_simulator')
     headless = LaunchConfiguration('headless')
     world = os.path.join(pkg_path, 'worlds', 'warehouse.world') # Updated world path
-    # pose = {
-    #     'x': LaunchConfiguration('x_pose', default='2.5'),
-    #     'y': LaunchConfiguration('y_pose', default='4'),
-    #     'z': LaunchConfiguration('z_pose', default='0.05'),
-    #     'R': LaunchConfiguration('roll', default='0.00'),
-    #     'P': LaunchConfiguration('pitch', default='0.00'),
-    #     'Y': LaunchConfiguration('yaw', default='3.142')
-    # }
-    
     pose = {
-        'x': LaunchConfiguration('x_pose', default='17.259089574451416'),
-        'y': LaunchConfiguration('y_pose', default='-8.986688946733075'),
-        'z': LaunchConfiguration('z_pose', default='0.045'),
+        'x': LaunchConfiguration('x_pose', default='2.5'),
+        'y': LaunchConfiguration('y_pose', default='4'),
+        'z': LaunchConfiguration('z_pose', default='0.05'),
         'R': LaunchConfiguration('roll', default='0.00'),
         'P': LaunchConfiguration('pitch', default='0.00'),
-        'Y': LaunchConfiguration('yaw', default='-0.01370242341700195')
+        'Y': LaunchConfiguration('yaw', default='3.142')
     }
-
+    
     # Declare launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace',

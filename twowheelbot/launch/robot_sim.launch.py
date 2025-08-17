@@ -21,16 +21,15 @@ def generate_launch_description():
 
     use_ros2_control = LaunchConfiguration('use_ros2_control')
 
-    # sdf_file = os.path.join(get_package_share_directory('rmf_fleet'), 'models', 'twowheelbot', 'model.sdf')
-    sdf_file = os.path.join(pkg_path, 'designs', 'twowheelbot', 'model.sdf')
+    sdf_file = os.path.join(pkg_path,'designs','model.sdf')
 
     pose = {
-        'x': LaunchConfiguration('x_pose', default='2.5'),
-        'y': LaunchConfiguration('y_pose', default='4'),
+        'x': LaunchConfiguration('x_pose', default='-3.5'),
+        'y': LaunchConfiguration('y_pose', default='-2'),
         'z': LaunchConfiguration('z_pose', default='0.05'),
         'R': LaunchConfiguration('roll', default='0.00'),
         'P': LaunchConfiguration('pitch', default='0.00'),
-        'Y': LaunchConfiguration('yaw', default='0.0')
+        'Y': LaunchConfiguration('yaw', default='-1.57')
     }
 
     remappings = [
@@ -79,8 +78,6 @@ def generate_launch_description():
         default_value='False',
         description='Hardware control. By Default set to simulation'
     )
-
-    gazebo_params_file = os.path.join(pkg_path, 'config','gazebo_params.yaml')
     
     rsp = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(pkg_path, 'launch' ,'rsp.launch.py')),
@@ -93,10 +90,10 @@ def generate_launch_description():
         launch_arguments={'world': world}.items()
     )
 
-    # if use_namespace == True:
-    #     robot_description_topic = [TextSubstitution(text='/'), LaunchConfiguration('namespace'), TextSubstitution(text='/robot_description')]
-    # else:
-    #     robot_description_topic = TextSubstitution(text='robot_description')
+    if use_namespace == True:
+        robot_description_topic = [TextSubstitution(text='/'), LaunchConfiguration('namespace'), TextSubstitution(text='/robot_description')]
+    else:
+        robot_description_topic = TextSubstitution(text='robot_description')
 
     # Spawn robot in Gazebo with namespace
     spawn = Node(
@@ -105,8 +102,8 @@ def generate_launch_description():
         namespace=namespace,
         output='screen',
         arguments=[
-            '-file', sdf_file,
-            # '-topic', robot_description_topic,
+            # '-file', sdf_file,
+            '-topic', robot_description_topic,
             '-entity', namespace,
             '-x', pose['x'], '-y', pose['y'], '-z', pose['z'],
             '-R', pose['R'], '-P', pose['P'], '-Y', pose['Y']
@@ -152,9 +149,9 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     ld.add_action(rsp)
-    # ld.add_action(gazebo)
+    ld.add_action(gazebo)
     
-    # ld.add_action(spawn)
+    ld.add_action(spawn)
     ld.add_action(twist_mux)
     ld.add_action(diff_drive_spawner)
     ld.add_action(joint_broad_spawner)

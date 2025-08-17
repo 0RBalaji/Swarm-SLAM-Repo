@@ -43,7 +43,7 @@ def generate_launch_description():
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static'),
                 #   ('/scan','scan'),
-                # #   ('/map','map'),
+                  ('/map','merged_map'),
                 # #   ('/map_metadata','map_metadata'),
                 #   ('/goal_pose','goal_pose'),
                 #   ('/global_costmap','global_costmap'),

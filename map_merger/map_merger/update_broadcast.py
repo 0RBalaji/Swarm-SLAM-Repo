@@ -44,14 +44,14 @@ class MapUpdateBroadcast(Node):
             self.qos
         )
         
-        self.map_client = self.create_client(GetMap, f'/{self.namespace}/map_server/get_map')
+        # self.map_client = self.create_client(GetMap, f'/{self.namespace}/map_server/get_map')
 
-        # self.map_sub = self.create_subscription(
-        #     OccupancyGrid,
-        #     f'/{self.namespace}/map',
-        #     self.map_callback,
-        #     self.qos
-        # )
+        self.map_sub = self.create_subscription(
+            OccupancyGrid,
+            f'/{self.namespace}/map',
+            self.map_callback,
+            self.qos
+        )
 
         # State management
         self.previous_map = None
@@ -59,7 +59,7 @@ class MapUpdateBroadcast(Node):
         self.map_lock = threading.Lock()
 
          # Timer to periodically request the map
-        self.create_timer(3.0, self.request_map)  # Calls the service every 2 seconds
+        # self.create_timer(3.0, self.request_map)  # Calls the service every 2 seconds
 
     def request_map(self):
         """Request map using GetMap service"""
@@ -79,15 +79,22 @@ class MapUpdateBroadcast(Node):
         except Exception as e:
             self.get_logger().error(f"Service call failed: {str(e)}")
 
+    def small_game(self, prev_map):
+        if prev_map:
+            self.delta_pub.publish(prev_map)
+            # self.publish_changes()
+        return
+
     def map_callback(self, msg):
         """Process incoming map updates"""
         with self.map_lock:
             if not self.validate_map(msg):
                 return
 
-            if self.previous_map is None:
+            if not self.previous_map:
                 self.previous_map = msg
                 self.get_logger().info("Initial map stored")
+                self.small_game(self.previous_map)
                 return
 
             try:

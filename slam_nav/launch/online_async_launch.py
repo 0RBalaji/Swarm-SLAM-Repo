@@ -57,12 +57,12 @@ def generate_launch_description():
             # {'map_yaml_file':'/home/balaji/multiamr/workshop_twowheelbot_serail'},
         ],
         remappings=[
-                    # ('/scan','scan'),
-                    # ('/map','map'),
-                    # ('/map_metadata','map_metadata'),
+                    ('/scan','scan'),
+                    ('/map','map'),
+                    ('/map_metadata','map_metadata'),
                     ('/tf','tf'),
                     ('/tf_static','tf_static'),
-                    # ('/odom','odom')
+                    ('/odom','odom')
                     ]
         )
 
