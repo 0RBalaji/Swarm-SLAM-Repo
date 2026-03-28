@@ -2,7 +2,7 @@
 
 [![ROS 2](https://img.shields.io/badge/ROS2-Humble%2FIron-blue)](https://docs.ros.org/en/humble/)
 [![Gazebo](https://img.shields.io/badge/Simulator-Gazebo-orange)](https://gazebosim.org/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
+<!-- [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE) -->
 [![Python](https://img.shields.io/badge/Python-3.8%2B-yellow)](https://www.python.org/)
 
 > **Research Publication:**  
@@ -70,13 +70,9 @@ flowchart TD
         botC["botC  …\namr_bot | SLAM | Nav2"]
     end
 
-    botA -->|"/botA/map"| TF
-    botB -->|"/botB/map"| TF
-    botC -->|"/botC/map"| TF
-
-    TF["🔗 tf_connector\nTF Frame Isolation & Bridging"]
-
-    TF -->|"unified TF tree"| MM
+    botA -->|"/botA/map"| MM
+    botB -->|"/botB/map"| MM
+    botC -->|"/botC/map"| MM
 
     MM["🧠 map_merger\nDecentralized Map Merging\ndecentralized_map_merger.py\nmerge_map.py · update_broadcast.py"]
 
@@ -193,7 +189,7 @@ The core contribution of this project — a decentralized, peer-to-peer map merg
 
 - **OS**: Ubuntu 22.04 (recommended)
 - **ROS 2**: Humble Hawksbill or Iron Irwini
-- **Gazebo**: Gazebo Classic (gazebo11) or Ignition/Gz
+- **Gazebo**: Gazebo Classic (gazebo11)
 - **Nav2**: `ros-<distro>-nav2-*`
 - **SLAM Toolbox**: `ros-<distro>-slam-toolbox`
 - **Python**: 3.8+
