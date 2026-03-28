@@ -56,40 +56,33 @@ The system is demonstrated in a realistic AWS RoboMaker warehouse simulation usi
 
 ## System Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Gazebo Simulation                     │
-│           Warehouse World  +  Robot Spawning             │
-└───────────────────────┬─────────────────────────────────┘
-                        │ /clock, sensor topics
-          ┌─────────────┼──────────────┐
-          │             │              │
-    ┌─────▼────┐  ┌─────▼────┐  ┌─────▼────┐
-    │  botA    │  │  botB    │  │  botC    │  ...
-    │  amr_bot │  │  amr_bot │  │  amr_bot │
-    │  SLAM    │  │  SLAM    │  │  SLAM    │
-    │  Nav2    │  │  Nav2    │  │  Nav2    │
-    └─────┬────┘  └─────┬────┘  └─────┬────┘
-          │             │              │
-          └──────┬───────┘              │
-                 │    /map topics       │
-         ┌───────▼──────────────────────▼────┐
-         │         tf_connector               │
-         │  (TF frame isolation & bridging)   │
-         └───────────────┬───────────────────┘
-                         │ unified TF tree
-         ┌───────────────▼───────────────────┐
-         │           map_merger               │
-         │  (Decentralized map merging)       │
-         │  • decentralized_map_merger.py     │
-         │  • merge_map.py                    │
-         │  • update_broadcast.py             │
-         └───────────────┬───────────────────┘
-                         │ /merged_map
-         ┌───────────────▼───────────────────┐
-         │           RViz2 / Nav2             │
-         │  (Visualization & Global Planning) │
-         └───────────────────────────────────┘
+```mermaid
+flowchart TD
+    GZ["🏭 Gazebo Simulation\nWarehouse World + Robot Spawning"]
+
+    GZ -->|"/clock, sensor topics"| botA
+    GZ -->|"/clock, sensor topics"| botB
+    GZ -->|"/clock, sensor topics"| botC
+
+    subgraph Swarm ["🤖 Robot Swarm"]
+        botA["botA\namr_bot | SLAM | Nav2"]
+        botB["botB\namr_bot | SLAM | Nav2"]
+        botC["botC  …\namr_bot | SLAM | Nav2"]
+    end
+
+    botA -->|"/botA/map"| TF
+    botB -->|"/botB/map"| TF
+    botC -->|"/botC/map"| TF
+
+    TF["🔗 tf_connector\nTF Frame Isolation & Bridging"]
+
+    TF -->|"unified TF tree"| MM
+
+    MM["🧠 map_merger\nDecentralized Map Merging\ndecentralized_map_merger.py\nmerge_map.py · update_broadcast.py"]
+
+    MM -->|"/merged_map"| VIZ
+
+    VIZ["📊 RViz2 / Nav2\nVisualization & Global Planning"]
 ```
 
 ---
@@ -353,5 +346,5 @@ This project is licensed under the **Apache License 2.0** — see the individual
 ---
 
 <p align="center">
-  Built with ❤️ using ROS 2, Gazebo, Nav2, and SLAM Toolbox
+  Built with ❤️ 🧠 using ROS 2, Gazebo, Nav2, and SLAM Toolbox
 </p>
